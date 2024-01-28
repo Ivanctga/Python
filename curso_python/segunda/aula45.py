@@ -4,8 +4,16 @@ Iterador -> quem saber entregar um valor por vez
 next -> me entregue o próximo valor 
 iter -> me entregue seu interador
 """
+texto = 'Ivan'
+# iteratador = iter(texto)
 
-numeros = range(0, 10, 8)
+# while True:
+#     try:
+#         letra = next(iteratador)
+#         print(letra)
+#     except StopIteration:
+#         break
 
-for numero in numeros:
-    print(numero)
+for letra in texto:
+    print(letra)
+
