@@ -1,7 +1,25 @@
+import re
+import sys
 
-cpf_enviado = '74682489070'
+# cpf_enviado = '746.824.890-70' \
+#     .replace('.','')\
+#     .replace(' ','')\
+#     .replace('-','')
+
+entrada = input('CPF [746.824.890-70]: ')
+
+cpf_enviado = re.sub(r'[^0-9]','', entrada)
+
+entrada_e_sequecial = entrada == entrada[0] * len(entrada)
+
+if entrada_e_sequecial:
+    print('Você enviou dados sequenciais.')
+    sys.exit()
+
+print('CPF enviado ',cpf_enviado)
+print()
+    
 nove_digitos = cpf_enviado[:9]
-
 contador_regressivo_1 = 10
 
 resultado_digito_1 = 0
@@ -31,6 +49,7 @@ if cpf_enviado == novo_cpf:
     print(f'{cpf_enviado} é valido')
 else:
     print('CPF inválido')
+print()
 
 
 
