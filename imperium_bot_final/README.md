@@ -1,12 +1,13 @@
 # 🚀 Imperium™ Bot
 
-Um bot completo para Telegram focado em vendas de produtos digitais, sistema de afiliados e gestão administrativa robusta.
+Um bot completo para Telegram focado em vendas de acesso a plataforma de IAs premium, sistema de afiliados e gestão administrativa robusta.
 
 ## 📋 Sobre o Projeto
 
-O **Imperium™ Bot** é uma solução completa para automação de vendas via Telegram, incluindo:
+O **Imperium™ Bot** é uma solução completa para automação de vendas de acesso a plataforma de IAs premium via Telegram, incluindo:
 
-- 🛒 **Sistema de Vendas**: Venda de planos com pagamento via Pix (Mercado Pago)
+- 🛒 **Sistema de Vendas**: Venda de planos de acesso com pagamento via Pix (Mercado Pago)
+- 🤖 **Plataforma de IAs**: Claude, ChatGPT, Cursor, Grok 4, Perplexity, Blackbox AI e mais
 - 👥 **Sistema de Afiliados**: Comissões automáticas de 20% para indicações
 - ⚙️ **Painel Administrativo**: Dashboard completo com estatísticas e gerenciamento
 - 📊 **Relatórios**: Exportação de dados e relatórios automáticos

@@ -89,10 +89,10 @@ async def select_plan(callback: CallbackQuery, state: FSMContext):
 📝 <b>Descrição:</b>
 {plan['description']}
 
-💎 <b>O que está incluso:</b>
-• ✅ Acesso completo ao Imperium™
+🤖 <b>O que está incluso:</b>
+• ✅ Acesso a todas as IAs premium
 • ✅ Grupo VIP exclusivo
-• ✅ Downloads ilimitados
+• ✅ Plataforma completa de ferramentas
 • ✅ Atualizações constantes
 • ✅ Suporte premium
 

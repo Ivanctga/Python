@@ -68,18 +68,20 @@ CHANNEL_LINK = "https://t.me/seu_canal"  # Link do canal principal
 
 # ===== MENSAGENS PADRÃO =====
 WELCOME_MESSAGE = """
-🎯 <b>Bem-vindo ao IMPERIUM™ Bot!</b>
+🎯 <b>Bem-vindo ao IMPERIUM™, {name}!</b>
 
-🚀 <b>O que você encontrará aqui:</b>
-• 📱 Apps Premium Desbloqueados
-• 🎮 Jogos Modificados
-• 🔧 Ferramentas Exclusivas
-• 💡 Métodos de Ganhar Dinheiro
-• 📚 Cursos Completos
+🤖 <b>O que você encontrará aqui:</b>
+• 🧠 Claude (Anthropic)
+• 💻 Cursor AI
+• 🌟 ChatGPT Plus
+• 🚀 Grok 4
+• 🔍 Perplexity Pro
+• ⚫ Blackbox AI
+• 🎬 Streamings Premium
 • 🎯 E muito mais!
 
-💎 <b>Pacote Imperial de Ferramentas</b>
-Um universo completo de recursos premium ao seu alcance!
+💎 <b>Plataforma Imperial de IAs</b>
+Um universo completo de inteligências artificiais premium ao seu alcance!
 
 🤝 <b>Sistema de Afiliados Disponível</b>
 Ganhe 20% de comissão em cada venda que você indicar!
@@ -93,18 +95,21 @@ BUY_MESSAGE = """
 💎 Escolha o plano ideal para você:
 
 🔥 <b>Vantagens de ser membro:</b>
-• ✅ Acesso ilimitado a todo conteúdo
+• ✅ Acesso ilimitado a todas as IAs
 • ✅ Atualizações constantes
 • ✅ Suporte premium
 • ✅ Grupo VIP exclusivo
-• ✅ Download direto sem limites
+• ✅ Plataforma completa de ferramentas
 
-💰 <b>Todos os planos incluem:</b>
-• 📱 +500 Apps Premium
-• 🎮 +200 Jogos Modificados  
-• 🔧 +50 Ferramentas Exclusivas
-• 💡 +30 Métodos de Renda
-• 📚 +100 Cursos Completos
+🤖 <b>Todos os planos incluem:</b>
+• 🧠 Claude (Anthropic)
+• 💻 Cursor AI
+• 🌟 ChatGPT Plus
+• 🚀 Grok 4
+• 🔍 Perplexity Pro
+• ⚫ Blackbox AI
+• 🎬 Netflix, Prime Video, Disney+
+• 📊 Streamings e ferramentas premium
 
 👇 Selecione seu plano:
 """
@@ -134,6 +139,7 @@ AFFILIATE_MESSAGE = """
 • Plano Anual (R$ 249,90) = R$ 49,98 por venda
 
 🚀 <b>Meta de 5 vendas/mês = R$ 149,90 extras!</b>
+🤖 <b>Ajude pessoas a acessar IAs premium!</b>
 
 👇 Escolha uma opção:
 """
@@ -169,15 +175,15 @@ SUCCESS_MESSAGE = """
 
 🎯 <b>Próximos passos:</b>
 1️⃣ Entre no grupo VIP abaixo
-2️⃣ Baixe o app Imperium™ 
-3️⃣ Comece a explorar todo conteúdo
+2️⃣ Acesse a plataforma Imperium™
+3️⃣ Comece a usar todas as IAs premium
 
 📱 <b>Acesso ao Grupo VIP:</b>
 {vip_group_link}
 
 💎 <b>Sua assinatura:</b>
 • 📅 Válida até: {end_date}
-• 🎮 Acesso completo liberado
+• 🤖 Acesso a todas as IAs liberado
 • 🔄 Renovação automática disponível
 
 🆘 <b>Precisa de ajuda?</b>

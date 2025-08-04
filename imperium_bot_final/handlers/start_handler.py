@@ -249,7 +249,7 @@ async def status_command(message: Message):
 💎 <b>Plano:</b> {subscription['plan_name']}
 💰 <b>Valor pago:</b> R$ {subscription['plan_price']:.2f}
 📅 <b>Válida até:</b> {format_date_br(end_date)}
-🎮 <b>Status:</b> Acesso liberado
+🤖 <b>Status:</b> Acesso liberado a todas as IAs
 
 🔗 <b>Acesso ao grupo VIP:</b>
 {VIP_GROUP_LINK}
@@ -291,7 +291,8 @@ def format_welcome_message(user, subscription: Optional[dict]) -> str:
     greeting = get_greeting()
     name = get_user_display_name(user.__dict__)
     
-    base_message = f"{greeting}, {name}!\n\n{WELCOME_MESSAGE}"
+    # Formatar mensagem com o nome da pessoa
+    base_message = f"{greeting}!\n\n{WELCOME_MESSAGE.format(name=name)}"
     
     if subscription:
         end_date = subscription['end_date']
@@ -305,7 +306,7 @@ def format_welcome_message(user, subscription: Optional[dict]) -> str:
 💎 Plano: {subscription['plan_name']}
 📅 Válida até: {format_date_br(end_date)}
 
-🎮 <b>Acesso liberado ao grupo VIP:</b>
+🤖 <b>Acesso liberado ao grupo VIP:</b>
 {VIP_GROUP_LINK}
 """
     
