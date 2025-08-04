@@ -114,7 +114,7 @@ class DatabaseManager:
             # Inserir configurações padrão se não existirem
             default_configs = [
                 ('commission_rate', '0.20', 'Taxa de comissão para afiliados (20%)'),
-                ('min_withdrawal', '10.00', 'Valor mínimo para saque (R$ 10,00)'),
+                ('min_withdrawal', '50.00', 'Valor mínimo para saque (R$ 50,00)'),
                 ('payment_expiration_hours', '24', 'Horas para expiração de pagamento Pix'),
                 ('vip_group_link', 'https://t.me/seu_grupo_vip', 'Link do grupo VIP'),
                 ('support_contact', '@seu_suporte', 'Contato de suporte')

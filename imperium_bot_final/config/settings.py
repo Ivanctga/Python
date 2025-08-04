@@ -29,37 +29,37 @@ ADMIN_IDS = [
 PLANS = {
     "MENSAL": {
         "name": "MENSAL",
-        "price": 29.90,
+        "price": 79.90,
         "duration_days": 30,
         "description": "📅 Acesso completo por 30 dias\n🚀 Teste todas as IAs premium\n💰 Ideal para começar a lucrar",
         "emoji": "💰"
     },
     "TRIMESTRAL": {
         "name": "TRIMESTRAL", 
-        "price": 79.90,
+        "price": 215.70,
         "duration_days": 90,
-        "description": "📅 Acesso completo por 90 dias\n💎 Economize 33% + bônus exclusivos\n🔥 Mais popular entre profissionais",
+        "description": "📅 Acesso completo por 90 dias\n💎 Economize 10% + bônus exclusivos\n🔥 Mais popular entre profissionais",
         "emoji": "💎"
     },
     "SEMESTRAL": {
         "name": "SEMESTRAL",
-        "price": 149.90,
+        "price": 383.50,
         "duration_days": 180,
-        "description": "📅 Acesso completo por 180 dias\n🔥 Economize 50% + vantagens VIP\n⚡ Máximo retorno do investimento",
+        "description": "📅 Acesso completo por 180 dias\n🔥 Economize 20% + vantagens VIP\n⚡ Máximo retorno do investimento",
         "emoji": "🔥"
     },
     "ANUAL": {
         "name": "ANUAL",
-        "price": 249.90,
+        "price": 670.00,
         "duration_days": 365,
-        "description": "📅 Acesso completo por 365 dias\n⭐ Melhor custo-benefício absoluto\n👑 Status VIP premium + benefícios exclusivos",
+        "description": "📅 Acesso completo por 365 dias\n⭐ Economize 30% + benefícios VIP\n👑 Status VIP premium + benefícios exclusivos",
         "emoji": "⭐"
     }
 }
 
 # ===== CONFIGURAÇÕES DO SISTEMA DE AFILIADOS =====
 COMMISSION_RATE = 0.20  # 20% de comissão
-MIN_WITHDRAWAL_AMOUNT = 10.00  # Valor mínimo para saque R$ 10,00
+MIN_WITHDRAWAL_AMOUNT = 50.00  # Valor mínimo para saque R$ 50,00
 
 # ===== LINKS E CONTATOS =====
 VIP_GROUP_LINK = "https://t.me/seu_grupo_vip"  # Link do grupo VIP
@@ -141,20 +141,20 @@ AFFILIATE_MESSAGE = """
 
 💎 <b>Por que nosso programa de afiliados é diferente:</b>
 • ✅ Comissão de <b>20%</b> (uma das maiores do mercado)
-• ✅ Saque mínimo de apenas <b>R$ 10,00</b>
+• ✅ Saque mínimo de apenas <b>R$ 50,00</b>
 • ✅ Pagamento via Pix instantâneo e automático
 • ✅ Dashboard em tempo real para acompanhar vendas
 • ✅ Suporte dedicado 24h para afiliados
 • ✅ Material de divulgação pronto para usar
 
 📊 <b>Potencial de ganhos reais:</b>
-• Plano Mensal (R$ 29,90) = <b>R$ 5,98</b> por venda
-• Plano Trimestral (R$ 79,90) = <b>R$ 15,98</b> por venda
-• Plano Semestral (R$ 149,90) = <b>R$ 29,98</b> por venda
-• Plano Anual (R$ 249,90) = <b>R$ 49,98</b> por venda
+• Plano Mensal (R$ 79,90) = <b>R$ 15,98</b> por venda
+• Plano Trimestral (R$ 215,70) = <b>R$ 43,14</b> por venda
+• Plano Semestral (R$ 383,50) = <b>R$ 76,70</b> por venda
+• Plano Anual (R$ 670,00) = <b>R$ 134,00</b> por venda
 
-🚀 <b>Meta conservadora: 5 vendas/mês = R$ 149,90 extras!</b>
-💪 <b>Afiliados top fazem R$ 2.000+ por mês!</b>
+🚀 <b>Meta conservadora: 3 vendas/mês = R$ 300+ extras!</b>
+💪 <b>Afiliados top fazem R$ 5.000+ por mês!</b>
 
 🤖 <b>Você está vendendo o futuro: acesso às melhores IAs do mundo!</b>
 

@@ -155,7 +155,7 @@ REM - Configurar o projeto
 2. **Gerar link**: Clique em "🔗 MEU LINK DE AFILIADO"
 3. **Compartilhar**: Envie seu link único
 4. **Acompanhar**: Veja vendas no dashboard
-5. **Sacar**: Solicite saque via Pix (mín. R$ 10)
+5. **Sacar**: Solicite saque via Pix (mín. R$ 50)
 
 ### ⚙️ Para Administradores
 
@@ -172,12 +172,19 @@ REM - Configurar o projeto
 PLANS = {
     "MENSAL": {
         "name": "MENSAL",
-        "price": 29.90,
+        "price": 79.90,
         "duration_days": 30,
-        "description": "📅 Acesso por 30 dias ao pacote completo",
+        "description": "📅 Acesso completo por 30 dias",
         "emoji": "💰"
     },
-    # Adicione mais planos conforme necessário
+    "TRIMESTRAL": {
+        "name": "TRIMESTRAL",
+        "price": 215.70,
+        "duration_days": 90,
+        "description": "📅 Acesso completo por 90 dias",
+        "emoji": "💎"
+    },
+    # E mais planos...
 }
 ```
 
@@ -193,7 +200,7 @@ Edite `config/settings.py` para personalizar:
 ### 💰 Comissões
 ```python
 COMMISSION_RATE = 0.20  # 20% de comissão
-MIN_WITHDRAWAL_AMOUNT = 10.00  # Valor mínimo para saque
+MIN_WITHDRAWAL_AMOUNT = 50.00  # Valor mínimo para saque
 ```
 
 ### 👨‍💼 Administradores
