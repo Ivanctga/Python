@@ -31,28 +31,28 @@ PLANS = {
         "name": "MENSAL",
         "price": 29.90,
         "duration_days": 30,
-        "description": "📅 Acesso por 30 dias ao pacote completo",
+        "description": "📅 Acesso completo por 30 dias\n🚀 Teste todas as IAs premium\n💰 Ideal para começar a lucrar",
         "emoji": "💰"
     },
     "TRIMESTRAL": {
         "name": "TRIMESTRAL", 
         "price": 79.90,
         "duration_days": 90,
-        "description": "📅 Acesso por 90 dias ao pacote completo\n💎 Economize 33%!",
+        "description": "📅 Acesso completo por 90 dias\n💎 Economize 33% + bônus exclusivos\n🔥 Mais popular entre profissionais",
         "emoji": "💎"
     },
     "SEMESTRAL": {
         "name": "SEMESTRAL",
         "price": 149.90,
         "duration_days": 180,
-        "description": "📅 Acesso por 180 dias ao pacote completo\n🔥 Economize 50%!",
+        "description": "📅 Acesso completo por 180 dias\n🔥 Economize 50% + vantagens VIP\n⚡ Máximo retorno do investimento",
         "emoji": "🔥"
     },
     "ANUAL": {
         "name": "ANUAL",
         "price": 249.90,
         "duration_days": 365,
-        "description": "📅 Acesso por 365 dias ao pacote completo\n⭐ Melhor custo-benefício!",
+        "description": "📅 Acesso completo por 365 dias\n⭐ Melhor custo-benefício absoluto\n👑 Status VIP premium + benefícios exclusivos",
         "emoji": "⭐"
     }
 }
@@ -68,20 +68,26 @@ CHANNEL_LINK = "https://t.me/seu_canal"  # Link do canal principal
 
 # ===== MENSAGENS PADRÃO =====
 WELCOME_MESSAGE = """
-🎯 <b>Bem-vindo ao IMPERIUM™, {name}!</b>
+🚨 <b>ᎥᗰᑭᗴᖇᎥᑌᗰ™, {name}, você ainda está fora do jogo?</b>
 
-🤖 <b>O que você encontrará aqui:</b>
-• 🧠 Claude (Anthropic)
-• 💻 Cursor AI
-• 🌟 ChatGPT Plus
-• 🚀 Grok 4
-• 🔍 Perplexity Pro
-• ⚫ Blackbox AI
-• 🎬 Streamings Premium
-• 🎯 E muito mais!
+💻 <b>Enquanto você espera, milhares de profissionais já estão lucrando pesado com as melhores IAs e automações do mercado — com apenas alguns cliques.</b>
 
-💎 <b>Plataforma Imperial de IAs</b>
-Um universo completo de inteligências artificiais premium ao seu alcance!
+🔹 <b>Por que o ᎥᗰᑭᗴᖇᎥᑌᗰ™ é indispensável?</b>
+✅ Mais de <b>R$ 20.000</b> em ferramentas premium liberadas de imediato.
+✅ Operação segura com Dicloak e proxies SOCKS5 — performance máxima, anonimato real e risco zero.
+✅ Atualizações mensais e novas soluções direto no seu painel.
+✅ Suporte ágil e reposição garantida — suas IAs nunca ficam fora do ar.
+
+🎁 <b>BÔNUS EXCLUSIVOS ᎥᗰᑭᗴᖇᎥᑌᗰ™:</b>
+🔄 Ferramentas novas toda semana, sem custo adicional.
+🎟 Sorteios de contas Paramount+, HBO Max, Disney+ e outras plataformas premium.
+🛠 Biblioteca com 200+ ferramentas extras organizadas para você escalar.
+📞 Suporte 24h por dia, 7 dias por semana — sempre que você precisar.
+
+⚠️ <b>Cada minuto de indecisão é um passo atrás dos seus concorrentes.</b>
+Essa oportunidade pode sair do ar a qualquer momento, mas seus resultados podem começar hoje.
+
+🔗 <b>Entre agora no ᎥᗰᑭᗴᖇᎥᑌᗰ™ e transforme IA em lucro.</b>
 
 🤝 <b>Sistema de Afiliados Disponível</b>
 Ganhe 20% de comissão em cada venda que você indicar!
@@ -90,58 +96,71 @@ Ganhe 20% de comissão em cada venda que você indicar!
 """
 
 BUY_MESSAGE = """
-🛒 <b>ADQUIRIR O IMPERIUM™</b>
+🛒 <b>ADQUIRIR O ᎥᗰᑭᗴᖇᎥᑌᗰ™</b>
 
-💎 Escolha o plano ideal para você:
+💎 <b>Escolha o plano ideal para começar a lucrar hoje:</b>
 
-🔥 <b>Vantagens de ser membro:</b>
-• ✅ Acesso ilimitado a todas as IAs
-• ✅ Atualizações constantes
-• ✅ Suporte premium
-• ✅ Grupo VIP exclusivo
-• ✅ Plataforma completa de ferramentas
+🔥 <b>O que você ganha sendo membro:</b>
+• ✅ Mais de <b>R$ 20.000</b> em ferramentas premium
+• ✅ Operação segura com Dicloak e proxies SOCKS5
+• ✅ Atualizações semanais sem custo adicional
+• ✅ Suporte 24h/7dias por semana
+• ✅ Grupo VIP exclusivo com estratégias
 
-🤖 <b>Todos os planos incluem:</b>
+🤖 <b>Arsenal completo de IAs premium:</b>
 • 🧠 Claude (Anthropic)
 • 💻 Cursor AI
 • 🌟 ChatGPT Plus
 • 🚀 Grok 4
 • 🔍 Perplexity Pro
 • ⚫ Blackbox AI
-• 🎬 Netflix, Prime Video, Disney+
-• 📊 Streamings e ferramentas premium
+• 🎬 Netflix, Prime Video, Disney+, HBO Max
+• 🛠 200+ ferramentas extras organizadas
 
-👇 Selecione seu plano:
+🎁 <b>BÔNUS EXCLUSIVOS:</b>
+• 🔄 Ferramentas novas toda semana
+• 🎟 Sorteios de plataformas premium
+• 📊 Performance máxima garantida
+• 🔒 Anonimato real e risco zero
+
+⚠️ <b>Não perca mais tempo enquanto outros lucram!</b>
+
+👇 Selecione seu plano e comece agora:
 """
 
 AFFILIATE_MESSAGE = """
-👥 <b>SISTEMA DE AFILIADOS IMPERIUM™</b>
+👥 <b>SISTEMA DE AFILIADOS ᎥᗰᑭᗴᖇᎥᑌᗰ™</b>
 
-💰 <b>Ganhe 20% de comissão em cada venda!</b>
+💰 <b>Ganhe 20% de comissão em cada venda e transforme sua rede em uma máquina de lucro!</b>
 
-🎯 <b>Como funciona:</b>
-1️⃣ Você gera seu link único
-2️⃣ Compartilha com seus contatos
-3️⃣ Recebe 20% de cada venda
-4️⃣ Saca via Pix quando quiser
+🎯 <b>Como funciona o sistema que já enriqueceu centenas:</b>
+1️⃣ Você gera seu link único de afiliado
+2️⃣ Compartilha com seus contatos (família, amigos, redes sociais)
+3️⃣ Recebe 20% de comissão de cada venda automaticamente
+4️⃣ Saca via Pix quando quiser, sem burocracia
 
-💎 <b>Vantagens:</b>
-• ✅ Comissão de 20% (uma das maiores do mercado)
-• ✅ Saque mínimo de apenas R$ 10,00
-• ✅ Pagamento via Pix instantâneo
-• ✅ Dashboard para acompanhar vendas
-• ✅ Suporte dedicado para afiliados
+💎 <b>Por que nosso programa de afiliados é diferente:</b>
+• ✅ Comissão de <b>20%</b> (uma das maiores do mercado)
+• ✅ Saque mínimo de apenas <b>R$ 10,00</b>
+• ✅ Pagamento via Pix instantâneo e automático
+• ✅ Dashboard em tempo real para acompanhar vendas
+• ✅ Suporte dedicado 24h para afiliados
+• ✅ Material de divulgação pronto para usar
 
-📊 <b>Exemplo de ganhos:</b>
-• Plano Mensal (R$ 29,90) = R$ 5,98 por venda
-• Plano Trimestral (R$ 79,90) = R$ 15,98 por venda
-• Plano Semestral (R$ 149,90) = R$ 29,98 por venda
-• Plano Anual (R$ 249,90) = R$ 49,98 por venda
+📊 <b>Potencial de ganhos reais:</b>
+• Plano Mensal (R$ 29,90) = <b>R$ 5,98</b> por venda
+• Plano Trimestral (R$ 79,90) = <b>R$ 15,98</b> por venda
+• Plano Semestral (R$ 149,90) = <b>R$ 29,98</b> por venda
+• Plano Anual (R$ 249,90) = <b>R$ 49,98</b> por venda
 
-🚀 <b>Meta de 5 vendas/mês = R$ 149,90 extras!</b>
-🤖 <b>Ajude pessoas a acessar IAs premium!</b>
+🚀 <b>Meta conservadora: 5 vendas/mês = R$ 149,90 extras!</b>
+💪 <b>Afiliados top fazem R$ 2.000+ por mês!</b>
 
-👇 Escolha uma opção:
+🤖 <b>Você está vendendo o futuro: acesso às melhores IAs do mundo!</b>
+
+⚠️ <b>Quanto mais você espera, mais dinheiro está perdendo.</b>
+
+👇 Escolha uma opção e comece a lucrar:
 """
 
 PAYMENT_INSTRUCTIONS = """
@@ -169,27 +188,36 @@ PAYMENT_INSTRUCTIONS = """
 """
 
 SUCCESS_MESSAGE = """
-🎉 <b>PAGAMENTO APROVADO!</b>
+🎉 <b>PAGAMENTO APROVADO! BEM-VINDO AO ᎥᗰᑭᗴᖇᎥᑌᗰ™!</b>
 
-✅ <b>Sua assinatura foi ativada com sucesso!</b>
+✅ <b>Parabéns! Sua assinatura foi ativada e você acabou de entrar no seleto grupo de profissionais que lucram com IA!</b>
 
-🎯 <b>Próximos passos:</b>
-1️⃣ Entre no grupo VIP abaixo
-2️⃣ Acesse a plataforma Imperium™
-3️⃣ Comece a usar todas as IAs premium
+🚀 <b>Seus próximos passos para o sucesso:</b>
+1️⃣ Entre no grupo VIP exclusivo abaixo
+2️⃣ Acesse sua plataforma ᎥᗰᑭᗴᖇᎥᑌᗰ™ premium
+3️⃣ Comece a usar suas R$ 20.000+ em ferramentas
+4️⃣ Explore todas as IAs e automações disponíveis
 
-📱 <b>Acesso ao Grupo VIP:</b>
+📱 <b>Acesso ao Grupo VIP Exclusivo:</b>
 {vip_group_link}
 
-💎 <b>Sua assinatura:</b>
+💎 <b>Detalhes da sua assinatura premium:</b>
 • 📅 Válida até: {end_date}
-• 🤖 Acesso a todas as IAs liberado
+• 🤖 Acesso total a todas as IAs liberado
+• 🛠 200+ ferramentas extras à sua disposição
+• 🔒 Operação segura com Dicloak e proxies SOCKS5
 • 🔄 Renovação automática disponível
 
-🆘 <b>Precisa de ajuda?</b>
-Entre em contato: {support_contact}
+🎁 <b>Seus bônus exclusivos já estão ativos:</b>
+• 🔄 Ferramentas novas toda semana
+• 🎟 Participação automática nos sorteios
+• 📞 Suporte 24h/7dias prioritário
 
-Bem-vindo ao IMPERIUM™! 🚀
+⚡ <b>Agora é hora de transformar IA em lucro real!</b>
+
+🆘 <b>Suporte premium 24h:</b> {support_contact}
+
+🔥 <b>Você fez a escolha certa! Bem-vindo ao futuro!</b> 🚀
 """
 
 PAYMENT_PENDING_MESSAGE = """
