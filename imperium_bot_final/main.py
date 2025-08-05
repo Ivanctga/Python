@@ -8,8 +8,7 @@ import sys
 import os
 from datetime import datetime
 
-from telegram import Update
-from telegram.ext import Application, ContextTypes
+from telegram.ext import Application
 from telegram.constants import ParseMode
 
 from config.settings import BOT_TOKEN, validate_config
@@ -17,11 +16,6 @@ from database.models import db_manager
 from utils.logger import logger
 from handlers import start_handler, payment_handler
 from admin_panel.scheduler import scheduler
-
-async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Log errors caused by Updates."""
-    logger.error(f'Update {update} caused error {context.error}')
-    await logger.log_system_event("ERROR", f"Update error: {context.error}")
 
 async def main():
     """Função principal do bot"""
@@ -42,9 +36,6 @@ async def main():
         start_handler.register_handlers(app)
         payment_handler.register_handlers(app)
         
-        # Registrar error handler
-        app.add_error_handler(error_handler)
-        
         # Iniciar scheduler
         scheduler.start()
         logger.info("✅ Scheduler iniciado")
@@ -54,7 +45,7 @@ async def main():
         
         # Iniciar polling
         logger.info("🚀 Bot iniciado! Pressione Ctrl+C para parar.")
-        await app.run_polling(allowed_updates=Update.ALL_TYPES)
+        await app.run_polling()
         
     except KeyboardInterrupt:
         logger.info("🛑 Bot interrompido pelo usuário")

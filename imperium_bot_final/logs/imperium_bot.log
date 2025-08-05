@@ -11,3 +11,27 @@
 2025-08-05 18:02:25,690 - imperium_bot - INFO - QR Code Generator inicializado para sistema: linux
 2025-08-05 18:02:25,693 - imperium_bot - INFO - Tarefas agendadas configuradas
 2025-08-05 18:02:25,701 - imperium_bot - INFO - QR Code gerado com sucesso
+2025-08-05 18:03:58,990 - imperium_bot - INFO - SDK do Mercado Pago inicializado com sucesso
+2025-08-05 18:03:59,000 - imperium_bot - INFO - QR Code Generator inicializado para sistema: linux
+2025-08-05 18:03:59,002 - imperium_bot - INFO - Tarefas agendadas configuradas
+2025-08-05 18:03:59,002 - imperium_bot - INFO - Iniciando Imperium™ Bot...
+2025-08-05 18:03:59,002 - imperium_bot - INFO - ✅ Configurações validadas
+2025-08-05 18:03:59,020 - imperium_bot - INFO - ✅ Banco de dados inicializado
+2025-08-05 18:03:59,030 - imperium_bot - ERROR - ❌ Erro crítico: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-08-05 18:03:59,030 - imperium_bot - INFO - Sistema - ERROR - Erro crítico: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-08-05 18:03:59,030 - imperium_bot - WARNING - Sistema - ERROR - Erro crítico: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-08-05 18:03:59,030 - imperium_bot - INFO - Sistema - SHUTDOWN - Bot finalizado
+2025-08-05 18:03:59,030 - imperium_bot - WARNING - Sistema - SHUTDOWN - Bot finalizado
+2025-08-05 18:03:59,030 - imperium_bot - INFO - 👋 Bot finalizado
+2025-08-05 18:04:14,924 - imperium_bot - INFO - SDK do Mercado Pago inicializado com sucesso
+2025-08-05 18:04:14,934 - imperium_bot - INFO - QR Code Generator inicializado para sistema: linux
+2025-08-05 18:04:14,936 - imperium_bot - INFO - Tarefas agendadas configuradas
+2025-08-05 18:04:14,936 - imperium_bot - INFO - Iniciando Imperium™ Bot...
+2025-08-05 18:04:14,936 - imperium_bot - INFO - ✅ Configurações validadas
+2025-08-05 18:04:14,939 - imperium_bot - INFO - ✅ Banco de dados inicializado
+2025-08-05 18:04:14,949 - imperium_bot - ERROR - ❌ Erro crítico: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-08-05 18:04:14,949 - imperium_bot - INFO - Sistema - ERROR - Erro crítico: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-08-05 18:04:14,949 - imperium_bot - WARNING - Sistema - ERROR - Erro crítico: 'Updater' object has no attribute '_Updater__polling_cleanup_cb' and no __dict__ for setting new attributes
+2025-08-05 18:04:14,949 - imperium_bot - INFO - Sistema - SHUTDOWN - Bot finalizado
+2025-08-05 18:04:14,949 - imperium_bot - WARNING - Sistema - SHUTDOWN - Bot finalizado
+2025-08-05 18:04:14,949 - imperium_bot - INFO - 👋 Bot finalizado
