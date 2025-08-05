@@ -1,127 +1,110 @@
 """
-Estados do FSM (Finite State Machine) para o Imperium™ Bot
+Estados do usuário para o Imperium™ Bot
 Define todos os estados possíveis dos usuários durante a interação
+(Versão simplificada sem dependência do aiogram)
 """
 
-from aiogram.fsm.state import State, StatesGroup
+from enum import Enum, auto
 
-class UserStates(StatesGroup):
+class UserStates(Enum):
     """Estados principais do usuário"""
     
     # Estado inicial
-    MAIN_MENU = State()
+    MAIN_MENU = "main_menu"
     
     # Estados de compra
-    SELECTING_PLAN = State()
-    ENTERING_PHONE = State()
-    PAYMENT_PENDING = State()
-    PAYMENT_CONFIRMED = State()
+    SELECTING_PLAN = "selecting_plan"
+    ENTERING_PHONE = "entering_phone"
+    PAYMENT_PENDING = "payment_pending"
+    PAYMENT_CONFIRMED = "payment_confirmed"
     
     # Estados de afiliados
-    AFFILIATE_MENU = State()
-    ENTERING_PIX_KEY = State()
-    WITHDRAWAL_PENDING = State()
+    AFFILIATE_MENU = "affiliate_menu"
+    ENTERING_PIX_KEY = "entering_pix_key"
+    WITHDRAWAL_PENDING = "withdrawal_pending"
     
     # Estados administrativos
-    ADMIN_MENU = State()
-    ADMIN_VIEWING_USERS = State()
-    ADMIN_VIEWING_PAYMENTS = State()
-    ADMIN_VIEWING_AFFILIATES = State()
-    ADMIN_VIEWING_WITHDRAWALS = State()
-    ADMIN_SENDING_NOTIFICATION = State()
-    ADMIN_PROCESSING_WITHDRAWAL = State()
+    ADMIN_MENU = "admin_menu"
+    ADMIN_VIEWING_USERS = "admin_viewing_users"
+    ADMIN_VIEWING_PAYMENTS = "admin_viewing_payments"
+    ADMIN_VIEWING_AFFILIATES = "admin_viewing_affiliates"
+    ADMIN_VIEWING_WITHDRAWALS = "admin_viewing_withdrawals"
+    ADMIN_SENDING_NOTIFICATION = "admin_sending_notification"
+    ADMIN_PROCESSING_WITHDRAWAL = "admin_processing_withdrawal"
 
-class PaymentStates(StatesGroup):
+class PaymentStates(Enum):
     """Estados específicos do processo de pagamento"""
     
     # Seleção e validação
-    PLAN_SELECTED = State()
-    PHONE_VALIDATION = State()
+    PLAN_SELECTED = "plan_selected"
+    PHONE_VALIDATION = "phone_validation"
     
     # Processamento do pagamento
-    GENERATING_PIX = State()
-    WAITING_PAYMENT = State()
-    CHECKING_PAYMENT = State()
+    GENERATING_PIX = "generating_pix"
+    WAITING_PAYMENT = "waiting_payment"
+    CHECKING_PAYMENT = "checking_payment"
     
     # Finalização
-    PAYMENT_APPROVED = State()
-    PAYMENT_REJECTED = State()
-    PAYMENT_EXPIRED = State()
+    PAYMENT_APPROVED = "payment_approved"
+    PAYMENT_REJECTED = "payment_rejected"
+    PAYMENT_EXPIRED = "payment_expired"
 
-class AffiliateStates(StatesGroup):
+class AffiliateStates(Enum):
     """Estados específicos do sistema de afiliados"""
     
     # Menu de afiliados
-    AFFILIATE_DASHBOARD = State()
-    VIEWING_AFFILIATE_STATS = State()
+    AFFILIATE_DASHBOARD = "affiliate_dashboard"
+    VIEWING_AFFILIATE_STATS = "viewing_affiliate_stats"
     
     # Processo de saque
-    REQUESTING_WITHDRAWAL = State()
-    PIX_KEY_VALIDATION = State()
-    WITHDRAWAL_CONFIRMATION = State()
+    REQUESTING_WITHDRAWAL = "requesting_withdrawal"
+    PIX_KEY_VALIDATION = "pix_key_validation"
+    WITHDRAWAL_CONFIRMATION = "withdrawal_confirmation"
     
     # Gerenciamento
-    VIEWING_SALES_HISTORY = State()
-    MANAGING_REFERRALS = State()
+    VIEWING_SALES_HISTORY = "viewing_sales_history"
+    MANAGING_REFERRALS = "managing_referrals"
 
-class AdminStates(StatesGroup):
+class AdminStates(Enum):
     """Estados específicos do painel administrativo"""
     
     # Dashboard principal
-    ADMIN_DASHBOARD = State()
-    VIEWING_STATISTICS = State()
+    ADMIN_DASHBOARD = "admin_dashboard"
+    VIEWING_STATISTICS = "viewing_statistics"
     
     # Gerenciamento de usuários
-    USER_MANAGEMENT = State()
-    USER_DETAILS = State()
-    USER_EDITING = State()
+    USER_MANAGEMENT = "user_management"
+    USER_DETAILS = "user_details"
+    USER_EDITING = "user_editing"
     
     # Gerenciamento de pagamentos
-    PAYMENT_MANAGEMENT = State()
-    PAYMENT_DETAILS = State()
-    PAYMENT_REFUND = State()
+    PAYMENT_MANAGEMENT = "payment_management"
+    PAYMENT_DETAILS = "payment_details"
+    PAYMENT_REFUND = "payment_refund"
     
     # Gerenciamento de afiliados
-    AFFILIATE_MANAGEMENT = State()
-    AFFILIATE_DETAILS = State()
+    AFFILIATE_MANAGEMENT = "affiliate_management"
+    AFFILIATE_DETAILS = "affiliate_details"
     
     # Gerenciamento de saques
-    WITHDRAWAL_MANAGEMENT = State()
-    WITHDRAWAL_PROCESSING = State()
-    WITHDRAWAL_REJECTION = State()
+    WITHDRAWAL_MANAGEMENT = "withdrawal_management"
+    WITHDRAWAL_PROCESSING = "withdrawal_processing"
+    WITHDRAWAL_REJECTION = "withdrawal_rejection"
     
     # Notificações e alertas
-    NOTIFICATION_CENTER = State()
-    SENDING_BROADCAST = State()
-    CREATING_ANNOUNCEMENT = State()
+    NOTIFICATION_CENTER = "notification_center"
+    SENDING_BROADCAST = "sending_broadcast"
+    CREATING_ANNOUNCEMENT = "creating_announcement"
     
     # Relatórios e exportações
-    REPORTS_MENU = State()
-    EXPORTING_DATA = State()
-    SCHEDULING_REPORTS = State()
+    REPORTS_MENU = "reports_menu"
+    EXPORTING_DATA = "exporting_data"
+    SCHEDULING_REPORTS = "scheduling_reports"
     
     # Configurações do sistema
-    SYSTEM_SETTINGS = State()
-    UPDATING_PLANS = State()
-    MANAGING_ADMINS = State()
-
-class ConversationStates(StatesGroup):
-    """Estados para conversações e inputs específicos"""
-    
-    # Entrada de dados
-    WAITING_TEXT_INPUT = State()
-    WAITING_NUMBER_INPUT = State()
-    WAITING_DATE_INPUT = State()
-    WAITING_FILE_UPLOAD = State()
-    
-    # Confirmações
-    WAITING_CONFIRMATION = State()
-    PROCESSING_REQUEST = State()
-    
-    # Feedback e suporte
-    PROVIDING_FEEDBACK = State()
-    CONTACTING_SUPPORT = State()
-    REPORTING_ISSUE = State()
+    SYSTEM_SETTINGS = "system_settings"
+    UPDATING_PLANS = "updating_plans"
+    MANAGING_ADMINS = "managing_admins"
 
 # Mapeamento de estados para descrições legíveis
 STATE_DESCRIPTIONS = {
@@ -166,14 +149,6 @@ STATE_DESCRIPTIONS = {
     AdminStates.NOTIFICATION_CENTER: "Central de Notificações",
     AdminStates.REPORTS_MENU: "Menu de Relatórios",
     AdminStates.SYSTEM_SETTINGS: "Configurações do Sistema",
-    
-    # Estados de conversação
-    ConversationStates.WAITING_TEXT_INPUT: "Aguardando Texto",
-    ConversationStates.WAITING_NUMBER_INPUT: "Aguardando Número",
-    ConversationStates.WAITING_CONFIRMATION: "Aguardando Confirmação",
-    ConversationStates.PROCESSING_REQUEST: "Processando Solicitação",
-    ConversationStates.PROVIDING_FEEDBACK: "Fornecendo Feedback",
-    ConversationStates.CONTACTING_SUPPORT: "Contatando Suporte",
 }
 
 def get_state_description(state) -> str:
@@ -181,7 +156,7 @@ def get_state_description(state) -> str:
     Retorna descrição legível do estado
     
     Args:
-        state: Estado do FSM
+        state: Estado do sistema
     
     Returns:
         Descrição do estado
@@ -197,9 +172,6 @@ CANCELLABLE_STATES = {
     PaymentStates.GENERATING_PIX,
     AffiliateStates.REQUESTING_WITHDRAWAL,
     AffiliateStates.PIX_KEY_VALIDATION,
-    ConversationStates.WAITING_TEXT_INPUT,
-    ConversationStates.WAITING_NUMBER_INPUT,
-    ConversationStates.WAITING_CONFIRMATION,
 }
 
 # Estados que requerem dados sensíveis
@@ -210,13 +182,12 @@ SENSITIVE_STATES = {
     AffiliateStates.PIX_KEY_VALIDATION,
 }
 
-# Estados temporários que expiram
+# Estados temporários que expiram (em minutos)
 TEMPORARY_STATES = {
-    UserStates.PAYMENT_PENDING: 1440,  # 24 horas em minutos
+    UserStates.PAYMENT_PENDING: 1440,  # 24 horas
     PaymentStates.WAITING_PAYMENT: 1440,
     PaymentStates.CHECKING_PAYMENT: 60,  # 1 hora
     AffiliateStates.WITHDRAWAL_CONFIRMATION: 60,
-    ConversationStates.WAITING_CONFIRMATION: 30,  # 30 minutos
 }
 
 def is_cancellable_state(state) -> bool:
@@ -254,130 +225,3 @@ def get_state_timeout(state) -> int:
         Tempo limite em minutos ou 0 se não tem limite
     """
     return TEMPORARY_STATES.get(state, 0)
-
-def is_admin_state(state) -> bool:
-    """
-    Verifica se é um estado administrativo
-    
-    Args:
-        state: Estado a ser verificado
-    
-    Returns:
-        True se é estado admin, False caso contrário
-    """
-    return isinstance(state, AdminStates)
-
-def is_payment_state(state) -> bool:
-    """
-    Verifica se é um estado de pagamento
-    
-    Args:
-        state: Estado a ser verificado
-    
-    Returns:
-        True se é estado de pagamento, False caso contrário
-    """
-    return isinstance(state, PaymentStates)
-
-def is_affiliate_state(state) -> bool:
-    """
-    Verifica se é um estado de afiliado
-    
-    Args:
-        state: Estado a ser verificado
-    
-    Returns:
-        True se é estado de afiliado, False caso contrário
-    """
-    return isinstance(state, AffiliateStates)
-
-# Estados que requerem keyboard específico
-KEYBOARD_STATES = {
-    UserStates.MAIN_MENU: "main_menu",
-    UserStates.SELECTING_PLAN: "plans",
-    UserStates.AFFILIATE_MENU: "affiliate",
-    UserStates.ADMIN_MENU: "admin",
-    PaymentStates.WAITING_PAYMENT: "payment_pending",
-    AffiliateStates.AFFILIATE_DASHBOARD: "affiliate_dashboard",
-    AdminStates.ADMIN_DASHBOARD: "admin_dashboard",
-}
-
-def get_keyboard_for_state(state) -> str:
-    """
-    Retorna o tipo de keyboard para o estado
-    
-    Args:
-        state: Estado atual
-    
-    Returns:
-        Tipo de keyboard ou None
-    """
-    return KEYBOARD_STATES.get(state)
-
-# Transições de estado permitidas
-ALLOWED_TRANSITIONS = {
-    UserStates.MAIN_MENU: [
-        UserStates.SELECTING_PLAN,
-        UserStates.AFFILIATE_MENU,
-        UserStates.ADMIN_MENU,
-    ],
-    UserStates.SELECTING_PLAN: [
-        UserStates.MAIN_MENU,
-        UserStates.ENTERING_PHONE,
-        PaymentStates.PLAN_SELECTED,
-    ],
-    UserStates.ENTERING_PHONE: [
-        UserStates.MAIN_MENU,
-        UserStates.SELECTING_PLAN,
-        PaymentStates.PHONE_VALIDATION,
-    ],
-    PaymentStates.PHONE_VALIDATION: [
-        PaymentStates.GENERATING_PIX,
-        UserStates.ENTERING_PHONE,
-    ],
-    PaymentStates.GENERATING_PIX: [
-        PaymentStates.WAITING_PAYMENT,
-        UserStates.MAIN_MENU,
-    ],
-    PaymentStates.WAITING_PAYMENT: [
-        PaymentStates.CHECKING_PAYMENT,
-        PaymentStates.PAYMENT_APPROVED,
-        PaymentStates.PAYMENT_EXPIRED,
-        UserStates.MAIN_MENU,
-    ],
-    # Adicionar mais transições conforme necessário
-}
-
-def is_valid_transition(from_state, to_state) -> bool:
-    """
-    Verifica se a transição entre estados é válida
-    
-    Args:
-        from_state: Estado atual
-        to_state: Estado destino
-    
-    Returns:
-        True se transição é válida, False caso contrário
-    """
-    allowed = ALLOWED_TRANSITIONS.get(from_state, [])
-    return to_state in allowed or to_state == UserStates.MAIN_MENU  # Sempre permitir voltar ao menu
-
-# Estados que requerem limpeza de dados
-CLEANUP_STATES = {
-    PaymentStates.PAYMENT_EXPIRED,
-    PaymentStates.PAYMENT_REJECTED,
-    UserStates.PAYMENT_CONFIRMED,
-    AffiliateStates.WITHDRAWAL_CONFIRMATION,
-}
-
-def requires_cleanup(state) -> bool:
-    """
-    Verifica se o estado requer limpeza de dados
-    
-    Args:
-        state: Estado a ser verificado
-    
-    Returns:
-        True se requer limpeza, False caso contrário
-    """
-    return state in CLEANUP_STATES

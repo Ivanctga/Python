@@ -3,49 +3,44 @@ Handler para comando /start e fluxo inicial do Imperium™ Bot
 Gerencia entrada de usuários, referências e menu principal
 """
 
-from aiogram import Router, F
-from aiogram.types import Message, CallbackQuery, FSInputFile
-from aiogram.filters import Command, CommandStart
-from aiogram.fsm.context import FSMContext
+from telegram import Update, InputFile
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
+from telegram.constants import ParseMode
 from typing import Optional
+import os
 
 from database.models import db_manager
 from states.user_states import UserStates
 from keyboards.inline_keyboards import get_main_menu_keyboard, get_admin_menu_keyboard
 from config.settings import (
     WELCOME_MESSAGE, ADMIN_IDS, VIP_GROUP_LINK, 
-    SUPPORT_CONTACT, format_date_br
+    SUPPORT_CONTACT
 )
-from utils.helpers import extract_referrer_from_start, get_user_display_name
+from utils.helpers import extract_referrer_from_start, get_user_display_name, format_date_br
 from utils.logger import logger
-import os
 
-router = Router()
-
-@router.message(CommandStart())
-async def start_command(message: Message, state: FSMContext, command: CommandStart):
+async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Processa comando /start com ou sem parâmetros de referência
     
     Args:
-        message: Mensagem do usuário
-        state: Estado FSM
-        command: Objeto do comando start
+        update: Update do telegram
+        context: Context do telegram
     """
     try:
-        user_id = message.from_user.id
-        username = message.from_user.username
-        first_name = message.from_user.first_name
-        last_name = message.from_user.last_name
+        user_id = update.effective_user.id
+        username = update.effective_user.username
+        first_name = update.effective_user.first_name
+        last_name = update.effective_user.last_name
         
         # Extrair referenciador se houver
         referrer_id = None
-        start_param = command.args
-        
-        if start_param:
-            referrer_id = extract_referrer_from_start(start_param)
-            if referrer_id == user_id:
-                referrer_id = None  # Usuário não pode se referenciar
+        if context.args:
+            start_param = context.args[0] if context.args else None
+            if start_param:
+                referrer_id = extract_referrer_from_start(start_param)
+                if referrer_id == user_id:
+                    referrer_id = None  # Usuário não pode se referenciar
         
         # Verificar se usuário já existe
         existing_user = await db_manager.get_user(user_id)
@@ -80,7 +75,7 @@ async def start_command(message: Message, state: FSMContext, command: CommandSta
             await logger.log_user_action(user_id, "RETORNO", "Usuário retornando")
         
         # Definir estado inicial
-        await state.set_state(UserStates.MAIN_MENU)
+        context.user_data['state'] = UserStates.MAIN_MENU
         
         # Verificar se usuário já tem assinatura ativa
         subscription = await db_manager.get_active_subscription(user_id)
@@ -89,228 +84,81 @@ async def start_command(message: Message, state: FSMContext, command: CommandSta
         banner_path = "assets/imperium_banner.jpg"
         if os.path.exists(banner_path):
             try:
-                photo = FSInputFile(banner_path)
-                await message.answer_photo(
-                    photo=photo,
-                    caption=format_welcome_message(message.from_user, subscription),
-                    reply_markup=get_appropriate_keyboard(user_id),
-                    parse_mode="HTML"
-                )
+                with open(banner_path, 'rb') as photo_file:
+                    await update.message.reply_photo(
+                        photo=photo_file,
+                        caption=format_welcome_message(update.effective_user, subscription),
+                        reply_markup=get_appropriate_keyboard(user_id),
+                        parse_mode=ParseMode.HTML
+                    )
             except Exception as e:
                 logger.error(f"Erro ao enviar banner: {e}")
-                # Fallback sem imagem
-                await send_text_welcome(message, subscription, user_id)
+                # Fallback para mensagem de texto
+                await update.message.reply_text(
+                    format_welcome_message(update.effective_user, subscription),
+                    reply_markup=get_appropriate_keyboard(user_id),
+                    parse_mode=ParseMode.HTML
+                )
         else:
-            await send_text_welcome(message, subscription, user_id)
+            # Enviar apenas mensagem de texto se não há banner
+            await update.message.reply_text(
+                format_welcome_message(update.effective_user, subscription),
+                reply_markup=get_appropriate_keyboard(user_id),
+                parse_mode=ParseMode.HTML
+            )
+        
+        await logger.log_user_action(user_id, "START", "Comando /start executado")
         
     except Exception as e:
-        logger.error(f"Erro no comando /start para usuário {user_id}: {e}")
-        await message.answer(
-            "❌ Ocorreu um erro ao iniciar. Tente novamente em alguns instantes.",
-            reply_markup=get_main_menu_keyboard()
+        logger.error(f"Erro no comando /start: {e}")
+        await update.message.reply_text(
+            "❌ Ocorreu um erro. Tente novamente em alguns instantes.",
+            parse_mode=ParseMode.HTML
         )
 
-@router.message(Command("admin"))
-async def admin_command(message: Message, state: FSMContext):
-    """
-    Comando administrativo
-    
-    Args:
-        message: Mensagem do usuário
-        state: Estado FSM
-    """
-    try:
-        user_id = message.from_user.id
-        
-        # Verificar se é administrador
-        if user_id not in ADMIN_IDS:
-            await message.answer("❌ Acesso negado. Apenas administradores podem usar este comando.")
-            await logger.log_user_action(user_id, "TENTATIVA_ACESSO_ADMIN", "Acesso negado")
-            return
-        
-        # Definir estado administrativo
-        await state.set_state(UserStates.ADMIN_MENU)
-        
-        # Buscar estatísticas básicas
-        stats = await db_manager.get_statistics()
-        
-        admin_message = f"""
-🔐 <b>PAINEL ADMINISTRATIVO - IMPERIUM™</b>
-
-👋 Bem-vindo, {get_user_display_name(message.from_user.__dict__)}!
-
-📊 <b>Estatísticas Rápidas:</b>
-👥 Usuários: <b>{stats.get('total_users', 0)}</b>
-🆕 Novos hoje: <b>{stats.get('users_today', 0)}</b>
-💎 Assinaturas ativas: <b>{stats.get('active_subscriptions', 0)}</b>
-💰 Faturamento total: <b>R$ {stats.get('total_revenue', 0):.2f}</b>
-💸 Saques pendentes: <b>{stats.get('pending_withdrawals', 0)}</b>
-
-🎯 Escolha uma opção abaixo:
-"""
-        
-        await message.answer(
-            admin_message,
-            reply_markup=get_admin_menu_keyboard(),
-            parse_mode="HTML"
-        )
-        
-        await logger.log_admin_action(user_id, "ACESSO_PAINEL", "Dashboard")
-        
-    except Exception as e:
-        logger.error(f"Erro no comando /admin para usuário {user_id}: {e}")
-        await message.answer("❌ Erro ao acessar painel administrativo.")
-
-@router.callback_query(F.data == "back_to_main")
-async def back_to_main_menu(callback: CallbackQuery, state: FSMContext):
-    """
-    Retorna ao menu principal
-    
-    Args:
-        callback: Callback query
-        state: Estado FSM
-    """
-    try:
-        user_id = callback.from_user.id
-        
-        # Limpar estado e voltar ao menu principal
-        await state.set_state(UserStates.MAIN_MENU)
-        
-        # Verificar assinatura ativa
-        subscription = await db_manager.get_active_subscription(user_id)
-        
-        welcome_msg = format_welcome_message(callback.from_user, subscription)
-        
-        await callback.message.edit_text(
-            welcome_msg,
-            reply_markup=get_appropriate_keyboard(user_id),
-            parse_mode="HTML"
-        )
-        
-        await callback.answer("🏠 Voltando ao menu principal...")
-        await logger.log_user_action(user_id, "VOLTAR_MENU", "Menu principal")
-        
-    except Exception as e:
-        logger.error(f"Erro ao voltar ao menu principal: {e}")
-        await callback.answer("❌ Erro ao voltar ao menu.")
-
-@router.message(Command("menu"))
-async def menu_command(message: Message, state: FSMContext):
-    """
-    Comando para acessar menu principal
-    
-    Args:
-        message: Mensagem do usuário
-        state: Estado FSM
-    """
-    try:
-        user_id = message.from_user.id
-        
-        await state.set_state(UserStates.MAIN_MENU)
-        
-        subscription = await db_manager.get_active_subscription(user_id)
-        welcome_msg = format_welcome_message(message.from_user, subscription)
-        
-        await message.answer(
-            welcome_msg,
-            reply_markup=get_appropriate_keyboard(user_id),
-            parse_mode="HTML"
-        )
-        
-        await logger.log_user_action(user_id, "COMANDO_MENU", "Acesso via comando")
-        
-    except Exception as e:
-        logger.error(f"Erro no comando /menu: {e}")
-        await message.answer("❌ Erro ao carregar menu.")
-
-@router.message(Command("status"))
-async def status_command(message: Message):
-    """
-    Comando para verificar status da assinatura
-    
-    Args:
-        message: Mensagem do usuário
-    """
-    try:
-        user_id = message.from_user.id
-        
-        # Buscar assinatura ativa
-        subscription = await db_manager.get_active_subscription(user_id)
-        
-        if subscription:
-            end_date = subscription['end_date']
-            if isinstance(end_date, str):
-                from datetime import datetime
-                end_date = datetime.fromisoformat(end_date)
-            
-            status_msg = f"""
-✅ <b>ASSINATURA ATIVA</b>
-
-💎 <b>Plano:</b> {subscription['plan_name']}
-💰 <b>Valor pago:</b> R$ {subscription['plan_price']:.2f}
-📅 <b>Válida até:</b> {format_date_br(end_date)}
-🤖 <b>Status:</b> Acesso liberado a todas as IAs
-
-🔗 <b>Acesso ao grupo VIP:</b>
-{VIP_GROUP_LINK}
-
-🆘 <b>Suporte:</b> {SUPPORT_CONTACT}
-"""
-        else:
-            status_msg = f"""
-❌ <b>NENHUMA ASSINATURA ATIVA</b>
-
-😔 Você não possui uma assinatura ativa no momento.
-
-🛒 Para adquirir o Imperium™, use: /start
-👥 Para se tornar afiliado, use: /start
-
-🆘 <b>Precisa de ajuda?</b> {SUPPORT_CONTACT}
-"""
-        
-        await message.answer(status_msg, parse_mode="HTML")
-        await logger.log_user_action(user_id, "VERIFICAR_STATUS", "Comando /status")
-        
-    except Exception as e:
-        logger.error(f"Erro no comando /status: {e}")
-        await message.answer("❌ Erro ao verificar status da assinatura.")
-
-def format_welcome_message(user, subscription: Optional[dict]) -> str:
+def format_welcome_message(user, subscription: Optional[dict] = None) -> str:
     """
     Formata mensagem de boas-vindas personalizada
     
     Args:
         user: Objeto do usuário
-        subscription: Dados da assinatura (se houver)
+        subscription: Dados da assinatura ativa (se houver)
     
     Returns:
         Mensagem formatada
     """
-    from utils.helpers import get_greeting
-    
-    greeting = get_greeting()
-    name = get_user_display_name(user.__dict__)
-    
-    # Formatar mensagem com o nome da pessoa
-    base_message = f"{greeting}!\n\n{WELCOME_MESSAGE.format(name=name)}"
-    
-    if subscription:
-        end_date = subscription['end_date']
-        if isinstance(end_date, str):
-            from datetime import datetime
-            end_date = datetime.fromisoformat(end_date)
+    try:
+        name = get_user_display_name(user)
         
-        base_message += f"""
+        if subscription:
+            # Usuário com assinatura ativa
+            end_date = subscription['end_date']
+            if isinstance(end_date, str):
+                from datetime import datetime
+                end_date = datetime.fromisoformat(end_date)
+            
+            return f"""
+✅ <b>Olá, {name}! Você já é membro do ᎥᗰᑭᗴᖇᎥᑌᗰ™!</b>
 
-✅ <b>SUA ASSINATURA ESTÁ ATIVA!</b>
-💎 Plano: {subscription['plan_name']}
-📅 Válida até: {format_date_br(end_date)}
+🎉 <b>Status:</b> Assinatura ativa
+📅 <b>Válida até:</b> {format_date_br(end_date)}
+🔑 <b>Acesso liberado a todas as ferramentas premium!</b>
 
-🤖 <b>Acesso liberado ao grupo VIP:</b>
-{VIP_GROUP_LINK}
+🚀 <b>Links de acesso:</b>
+• 📱 Grupo VIP: {VIP_GROUP_LINK}
+• 🆘 Suporte: {SUPPORT_CONTACT}
+
+💎 <b>Aproveite ao máximo sua assinatura!</b>
+
+📱 <b>Use o menu abaixo para navegar:</b>
 """
-    
-    return base_message
+        else:
+            # Usuário sem assinatura
+            return WELCOME_MESSAGE.format(name=name)
+            
+    except Exception as e:
+        logger.error(f"Erro ao formatar mensagem de boas-vindas: {e}")
+        return WELCOME_MESSAGE.format(name="amigo")
 
 def get_appropriate_keyboard(user_id: int):
     """
@@ -320,136 +168,198 @@ def get_appropriate_keyboard(user_id: int):
         user_id: ID do usuário
     
     Returns:
-        Teclado apropriado
+        Teclado inline apropriado
     """
     if user_id in ADMIN_IDS:
-        # Adicionar botão de admin para administradores
-        from keyboards.inline_keyboards import InlineKeyboardBuilder, InlineKeyboardButton
-        from config.settings import EMOJIS
-        
-        builder = InlineKeyboardBuilder()
-        
-        # Botões normais do menu principal
-        builder.row(
-            InlineKeyboardButton(
-                text=f"{EMOJIS['cart']} QUERO ADQUIRIR O IMPERIUM™",
-                callback_data="buy_plans"
-            )
-        )
-        
-        builder.row(
-            InlineKeyboardButton(
-                text=f"{EMOJIS['users']} SISTEMA DE AFILIADOS",
-                callback_data="affiliate_menu"
-            )
-        )
-        
-        # Botão administrativo
-        builder.row(
-            InlineKeyboardButton(
-                text=f"{EMOJIS['gear']} PAINEL ADMINISTRATIVO",
-                callback_data="admin_menu"
-            )
-        )
-        
-        # Suporte e canal
-        builder.row(
-            InlineKeyboardButton(
-                text=f"{EMOJIS['info']} SUPORTE",
-                url="https://t.me/seu_suporte"
-            ),
-            InlineKeyboardButton(
-                text=f"{EMOJIS['rocket']} CANAL",
-                url="https://t.me/seu_canal"
-            )
-        )
-        
-        return builder.as_markup()
+        return get_admin_menu_keyboard()
     else:
         return get_main_menu_keyboard()
 
-async def send_text_welcome(message: Message, subscription: Optional[dict], user_id: int):
-    """
-    Envia mensagem de boas-vindas apenas texto
-    
-    Args:
-        message: Mensagem original
-        subscription: Dados da assinatura
-        user_id: ID do usuário
-    """
-    welcome_msg = format_welcome_message(message.from_user, subscription)
-    
-    await message.answer(
-        welcome_msg,
-        reply_markup=get_appropriate_keyboard(user_id),
-        parse_mode="HTML"
-    )
-
-@router.message(Command("help"))
-async def help_command(message: Message):
-    """
-    Comando de ajuda
-    
-    Args:
-        message: Mensagem do usuário
-    """
-    help_text = f"""
-🆘 <b>AJUDA - IMPERIUM™ BOT</b>
-
-📋 <b>Comandos disponíveis:</b>
-/start - Iniciar o bot
-/menu - Acessar menu principal
-/status - Verificar status da assinatura
-/help - Esta mensagem de ajuda
-
-🛒 <b>Para comprar:</b>
-1. Use /start
-2. Clique em "QUERO ADQUIRIR O IMPERIUM™"
-3. Escolha seu plano
-4. Informe seu telefone
-5. Pague via Pix
-
-👥 <b>Para ser afiliado:</b>
-1. Use /start
-2. Clique em "SISTEMA DE AFILIADOS"
-3. Gere seu link de afiliado
-4. Compartilhe e ganhe 20% de comissão
-
-🆘 <b>Suporte:</b> {SUPPORT_CONTACT}
-📢 <b>Canal:</b> https://t.me/seu_canal
-"""
-    
-    await message.answer(help_text, parse_mode="HTML")
-
-# Fallback para mensagens não reconhecidas
-@router.message()
-async def unknown_message(message: Message, state: FSMContext):
-    """
-    Handler para mensagens não reconhecidas
-    
-    Args:
-        message: Mensagem do usuário
-        state: Estado FSM
-    """
+async def menu_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Processa callbacks do menu principal"""
     try:
-        user_id = message.from_user.id
-        current_state = await state.get_state()
+        query = update.callback_query
+        await query.answer()
         
-        # Se não está em nenhum estado específico, redirecionar para menu
-        if not current_state or current_state == UserStates.MAIN_MENU:
-            await message.answer(
-                "🤔 Não entendi sua mensagem. Use os botões abaixo para navegar:",
-                reply_markup=get_appropriate_keyboard(user_id)
-            )
-        else:
-            # Está em algum fluxo específico, dar dica
-            await message.answer(
-                "📝 Por favor, use os botões disponíveis ou cancele a operação atual.",
-                reply_markup=get_main_menu_keyboard()
-            )
+        user_id = query.from_user.id
+        data = query.data
         
-        await logger.log_user_action(user_id, "MENSAGEM_NAO_RECONHECIDA", message.text[:100])
+        if data == "main_menu":
+            context.user_data['state'] = UserStates.MAIN_MENU
+            
+            # Verificar assinatura atual
+            subscription = await db_manager.get_active_subscription(user_id)
+            
+            await query.edit_message_text(
+                format_welcome_message(query.from_user, subscription),
+                reply_markup=get_appropriate_keyboard(user_id),
+                parse_mode=ParseMode.HTML
+            )
+            
+            await logger.log_user_action(user_id, "MENU_PRINCIPAL", "Retorno ao menu")
+        
+        elif data == "my_subscription":
+            await show_subscription_info(update, context)
+        
+        elif data == "affiliate_program":
+            await show_affiliate_program(update, context)
+        
+        elif data == "support":
+            await show_support_info(update, context)
         
     except Exception as e:
-        logger.error(f"Erro no handler de mensagem desconhecida: {e}")
-        await message.answer("❌ Erro ao processar mensagem.")
+        logger.error(f"Erro no callback do menu: {e}")
+        await query.answer("❌ Erro ao processar solicitação.")
+
+async def show_subscription_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Exibe informações da assinatura"""
+    try:
+        query = update.callback_query
+        user_id = query.from_user.id
+        
+        subscription = await db_manager.get_active_subscription(user_id)
+        
+        if subscription:
+            end_date = subscription['end_date']
+            if isinstance(end_date, str):
+                from datetime import datetime
+                end_date = datetime.fromisoformat(end_date)
+            
+            plan_name = subscription.get('plan_name', 'N/A')
+            
+            info_message = f"""
+📋 <b>INFORMAÇÕES DA ASSINATURA</b>
+
+✅ <b>Status:</b> Ativa
+💎 <b>Plano:</b> {plan_name}
+📅 <b>Válida até:</b> {format_date_br(end_date)}
+
+🚀 <b>Acesso liberado:</b>
+• ✅ Todas as IAs premium
+• ✅ Grupo VIP exclusivo
+• ✅ Suporte prioritário
+• ✅ Atualizações gratuitas
+
+🔗 <b>Links importantes:</b>
+• 📱 Grupo VIP: {VIP_GROUP_LINK}
+• 🆘 Suporte: {SUPPORT_CONTACT}
+"""
+        else:
+            info_message = """
+❌ <b>NENHUMA ASSINATURA ATIVA</b>
+
+🚫 Você não possui uma assinatura ativa no momento.
+
+🛒 <b>Para ter acesso completo:</b>
+• Adquira um de nossos planos
+• Acesse todas as IAs premium
+• Entre no grupo VIP exclusivo
+
+💰 <b>Aproveite nossos preços promocionais!</b>
+"""
+        
+        await query.edit_message_text(
+            info_message,
+            reply_markup=get_main_menu_keyboard(),
+            parse_mode=ParseMode.HTML
+        )
+        
+        await logger.log_user_action(user_id, "CONSULTAR_ASSINATURA", "Informações visualizadas")
+        
+    except Exception as e:
+        logger.error(f"Erro ao exibir informações da assinatura: {e}")
+        await query.answer("❌ Erro ao carregar informações.")
+
+async def show_affiliate_program(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Exibe informações do programa de afiliados"""
+    try:
+        query = update.callback_query
+        user_id = query.from_user.id
+        
+        # Buscar dados do afiliado
+        affiliate_data = await db_manager.get_affiliate_stats(user_id)
+        referrals_count = affiliate_data.get('total_referrals', 0)
+        total_commission = affiliate_data.get('total_commission', 0.0)
+        pending_commission = affiliate_data.get('pending_commission', 0.0)
+        
+        # Gerar link de afiliado
+        affiliate_link = f"https://t.me/{context.bot.username}?start=ref_{user_id}"
+        
+        from config.settings import AFFILIATE_MESSAGE
+        affiliate_info = f"""
+{AFFILIATE_MESSAGE}
+
+📊 <b>SEUS NÚMEROS:</b>
+👥 <b>Referenciados:</b> {referrals_count}
+💰 <b>Comissão total:</b> R$ {total_commission:.2f}
+⏳ <b>Comissão pendente:</b> R$ {pending_commission:.2f}
+
+🔗 <b>SEU LINK DE AFILIADO:</b>
+<code>{affiliate_link}</code>
+
+💡 <b>Como usar:</b>
+1. Copie o link acima
+2. Compartilhe em suas redes sociais
+3. Ganhe 20% de cada venda realizada
+4. Saque via Pix quando quiser
+
+🎯 <b>Dica de ouro:</b> Conte para seus seguidores como as IAs estão revolucionando o mercado de trabalho!
+"""
+        
+        await query.edit_message_text(
+            affiliate_info,
+            reply_markup=get_main_menu_keyboard(),
+            parse_mode=ParseMode.HTML
+        )
+        
+        await logger.log_user_action(user_id, "PROGRAMA_AFILIADOS", "Informações acessadas")
+        
+    except Exception as e:
+        logger.error(f"Erro ao exibir programa de afiliados: {e}")
+        await query.answer("❌ Erro ao carregar informações de afiliados.")
+
+async def show_support_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Exibe informações de suporte"""
+    try:
+        query = update.callback_query
+        user_id = query.from_user.id
+        
+        support_message = f"""
+🆘 <b>SUPORTE IMPERIUM™</b>
+
+💬 <b>Precisa de ajuda? Estamos aqui para você!</b>
+
+📞 <b>Canais de atendimento:</b>
+• 💬 Suporte direto: {SUPPORT_CONTACT}
+• ⚡ Resposta em até 2 horas
+• 🕒 Atendimento 24h/7dias
+
+❓ <b>Principais dúvidas:</b>
+• ✅ Como acessar as ferramentas
+• ✅ Problemas com pagamento
+• ✅ Renovação de assinatura
+• ✅ Dúvidas sobre afiliados
+
+🔧 <b>Suporte técnico especializado</b>
+Nossa equipe está sempre pronta para ajudar você a aproveitar ao máximo o Imperium™!
+
+📱 <b>Clique no botão abaixo ou envie uma mensagem para:</b>
+{SUPPORT_CONTACT}
+"""
+        
+        await query.edit_message_text(
+            support_message,
+            reply_markup=get_main_menu_keyboard(),
+            parse_mode=ParseMode.HTML
+        )
+        
+        await logger.log_user_action(user_id, "SUPORTE", "Informações acessadas")
+        
+    except Exception as e:
+        logger.error(f"Erro ao exibir informações de suporte: {e}")
+        await query.answer("❌ Erro ao carregar informações de suporte.")
+
+def register_handlers(app: Application):
+    """Registra todos os handlers do start"""
+    app.add_handler(CommandHandler("start", start_command))
+    app.add_handler(CallbackQueryHandler(menu_callback, pattern="^(main_menu|my_subscription|affiliate_program|support)$"))

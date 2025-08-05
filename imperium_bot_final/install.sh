@@ -220,7 +220,7 @@ test_imports() {
     python3 -c "
 import sys
 try:
-    import aiogram
+    import telegram
     import aiosqlite
     import mercadopago
     import qrcode

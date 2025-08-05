@@ -8,16 +8,20 @@ import sys
 import os
 from datetime import datetime
 
-from aiogram import Bot, Dispatcher
-from aiogram.fsm.storage.memory import MemoryStorage
-from aiogram.client.default import DefaultBotProperties
-from aiogram.enums import ParseMode
+from telegram import Update
+from telegram.ext import Application, ContextTypes
+from telegram.constants import ParseMode
 
 from config.settings import BOT_TOKEN, validate_config
 from database.models import db_manager
 from utils.logger import logger
 from handlers import start_handler, payment_handler
 from admin_panel.scheduler import scheduler
+
+async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Log errors caused by Updates."""
+    logger.error(f'Update {update} caused error {context.error}')
+    await logger.log_system_event("ERROR", f"Update error: {context.error}")
 
 async def main():
     """Função principal do bot"""
@@ -32,17 +36,14 @@ async def main():
         logger.info("✅ Banco de dados inicializado")
         
         # Configurar bot
-        bot = Bot(
-            token=BOT_TOKEN,
-            default=DefaultBotProperties(parse_mode=ParseMode.HTML)
-        )
-        
-        # Configurar dispatcher
-        dp = Dispatcher(storage=MemoryStorage())
+        app = Application.builder().token(BOT_TOKEN).build()
         
         # Registrar handlers
-        dp.include_router(start_handler.router)
-        dp.include_router(payment_handler.router)
+        start_handler.register_handlers(app)
+        payment_handler.register_handlers(app)
+        
+        # Registrar error handler
+        app.add_error_handler(error_handler)
         
         # Iniciar scheduler
         scheduler.start()
@@ -53,7 +54,7 @@ async def main():
         
         # Iniciar polling
         logger.info("🚀 Bot iniciado! Pressione Ctrl+C para parar.")
-        await dp.start_polling(bot)
+        await app.run_polling(allowed_updates=Update.ALL_TYPES)
         
     except KeyboardInterrupt:
         logger.info("🛑 Bot interrompido pelo usuário")

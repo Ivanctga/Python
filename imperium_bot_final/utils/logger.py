@@ -9,7 +9,7 @@ import os
 from datetime import datetime
 from typing import Optional
 from logging.handlers import RotatingFileHandler
-from aiogram import Bot
+from telegram import Bot
 from config.settings import CANAL_LOGS_ID, BOT_TOKEN, LOG_FORMAT, LOG_FILE
 
 class TelegramLogHandler(logging.Handler):

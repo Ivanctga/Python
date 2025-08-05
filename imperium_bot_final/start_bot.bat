@@ -122,7 +122,7 @@ echo ✅ Diretórios verificados
 
 :: Verificar dependências Python
 echo Verificando dependências...
-python -c "import aiogram, aiosqlite, mercadopago, qrcode, PIL; print('✅ Dependências verificadas')" 2>nul
+python -c "import telegram, aiosqlite, mercadopago, qrcode; print('✅ Dependências verificadas')" 2>nul
 if %errorlevel% neq 0 (
     echo ❌ Erro nas dependências
     echo Execute: pip install -r requirements.txt
