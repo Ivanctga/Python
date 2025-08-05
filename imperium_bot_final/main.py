@@ -8,10 +8,8 @@ import sys
 import os
 from datetime import datetime
 
-from aiogram import Bot, Dispatcher
-from aiogram.fsm.storage.memory import MemoryStorage
-from aiogram.client.default import DefaultBotProperties
-from aiogram.enums import ParseMode
+from telegram.ext import Application
+from telegram.constants import ParseMode
 
 from config.settings import BOT_TOKEN, validate_config
 from database.models import db_manager
@@ -32,17 +30,11 @@ async def main():
         logger.info("✅ Banco de dados inicializado")
         
         # Configurar bot
-        bot = Bot(
-            token=BOT_TOKEN,
-            default=DefaultBotProperties(parse_mode=ParseMode.HTML)
-        )
-        
-        # Configurar dispatcher
-        dp = Dispatcher(storage=MemoryStorage())
+        app = Application.builder().token(BOT_TOKEN).build()
         
         # Registrar handlers
-        dp.include_router(start_handler.router)
-        dp.include_router(payment_handler.router)
+        start_handler.register_handlers(app)
+        payment_handler.register_handlers(app)
         
         # Iniciar scheduler
         scheduler.start()
@@ -53,7 +45,7 @@ async def main():
         
         # Iniciar polling
         logger.info("🚀 Bot iniciado! Pressione Ctrl+C para parar.")
-        await dp.start_polling(bot)
+        await app.run_polling()
         
     except KeyboardInterrupt:
         logger.info("🛑 Bot interrompido pelo usuário")

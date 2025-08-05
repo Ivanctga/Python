@@ -322,10 +322,10 @@ Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para detalhes.
 
 ## 🎉 Agradecimentos
 
-- **Aiogram**: Framework do bot Telegram
+- **Python-telegram-bot**: Framework do bot Telegram
 - **Mercado Pago**: API de pagamentos
 - **SQLite**: Banco de dados
-- **Pillow**: Processamento de imagens
+- **QRCode**: Geração de códigos QR
 - **APScheduler**: Agendamento de tarefas
 
 ---
