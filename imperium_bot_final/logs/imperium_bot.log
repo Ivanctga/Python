@@ -1,3 +1,9 @@
 2025-08-05 17:55:53,515 - imperium_bot - INFO - SDK do Mercado Pago inicializado com sucesso
 2025-08-05 17:55:53,520 - imperium_bot - INFO - QR Code Generator inicializado para sistema: linux
 2025-08-05 17:55:53,523 - imperium_bot - INFO - Tarefas agendadas configuradas
+2025-08-05 17:59:49,953 - imperium_bot - INFO - QR Code Generator inicializado para sistema: linux
+2025-08-05 17:59:49,961 - imperium_bot - ERROR - Erro ao gerar QR Code: No module named 'PIL'
+2025-08-05 17:59:49,962 - imperium_bot - INFO - Gerando QR Code usando método de fallback
+2025-08-05 17:59:49,969 - imperium_bot - ERROR - Erro no fallback do QR Code: No module named 'PIL'
+2025-08-05 18:00:07,634 - imperium_bot - INFO - QR Code Generator inicializado para sistema: linux
+2025-08-05 18:00:07,648 - imperium_bot - INFO - QR Code gerado com sucesso
