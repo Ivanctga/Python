@@ -80,32 +80,50 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Verificar se usuário já tem assinatura ativa
         subscription = await db_manager.get_active_subscription(user_id)
         
-        # Enviar banner se existir
-        banner_path = "assets/imperium_banner.jpg"
-        if os.path.exists(banner_path):
-            try:
-                with open(banner_path, 'rb') as photo_file:
-                    await update.message.reply_photo(
-                        photo=photo_file,
-                        caption=format_welcome_message(update.effective_user, subscription),
-                        reply_markup=get_appropriate_keyboard(user_id),
-                        parse_mode=ParseMode.HTML
-                    )
-            except Exception as e:
-                logger.error(f"Erro ao enviar banner: {e}")
-                # Fallback para mensagem de texto
-                await update.message.reply_text(
-                    format_welcome_message(update.effective_user, subscription),
-                    reply_markup=get_appropriate_keyboard(user_id),
-                    parse_mode=ParseMode.HTML
-                )
-        else:
-            # Enviar apenas mensagem de texto se não há banner
+        # Enviar banner personalizado - SEMPRE TENTA IMAGEM PRIMEIRO
+        banner_paths = [
+            "banner.jpg",           # Raiz do projeto
+            "banner.png", 
+            "imperium_banner.jpg",
+            "imperium_banner.png",
+            "assets/banner.jpg",    # Pasta assets
+            "assets/banner.png",
+            "assets/imperium_banner.jpg",
+            "assets/imperium_banner.png",
+            "images/banner.jpg",    # Pasta images  
+            "images/banner.png"
+        ]
+        
+        banner_sent = False
+        welcome_text = format_welcome_message(update.effective_user, subscription)
+        keyboard = get_appropriate_keyboard(user_id)
+        
+        # Tentar enviar banner de qualquer um dos caminhos
+        for banner_path in banner_paths:
+            if os.path.exists(banner_path):
+                try:
+                    with open(banner_path, 'rb') as photo_file:
+                        await update.message.reply_photo(
+                            photo=photo_file,
+                            caption=welcome_text,
+                            reply_markup=keyboard,
+                            parse_mode=ParseMode.HTML
+                        )
+                    banner_sent = True
+                    logger.info(f"✅ Banner enviado: {banner_path}")
+                    break
+                except Exception as e:
+                    logger.error(f"Erro ao enviar banner {banner_path}: {e}")
+                    continue
+        
+        # Se não conseguiu enviar banner, enviar só texto
+        if not banner_sent:
             await update.message.reply_text(
-                format_welcome_message(update.effective_user, subscription),
-                reply_markup=get_appropriate_keyboard(user_id),
+                welcome_text,
+                reply_markup=keyboard,
                 parse_mode=ParseMode.HTML
             )
+            logger.info("📝 Banner não encontrado, enviado apenas texto")
         
         await logger.log_user_action(user_id, "START", "Comando /start executado")
         
